@@ -3,40 +3,38 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-# Carregar dados dos usuários do arquivo JSON
+# Load user data from the JSON file
 try:
-    with open('users_data.json', 'r') as f:
+    with open('data_user.json', 'r') as f:
         users = json.load(f)
 except FileNotFoundError:
     users = []
 
-# Rota para obter todos os usuários com informações básicas (nome, idade, cpf)
+# Route to get all users with basic information (name, age, cpf, email)
 @app.route('/user', methods=['GET']) 
 def get_users_info():
-    print(users)
-    users_info = [{'name': u['name'], 'age': u['age'], 'cpf': u['cpf']} for u in users]
+    users_info = [{'id': u['id'], 'name': u['name'], 'cpf': u['cpf'], 'age': u['age'], 'email': u['email']} for u in users]
     return jsonify(users_info)
 
+# Route to get information of a specific user by ID
 @app.route('/user/<int:id_usuario>', methods=['GET'])
 def get_user_info(id_usuario):
-    users_info = 0
     for u in users:
         if u["id"] == id_usuario:
-            users_info = {'name': u['name'], 'age': u['age'], 'cpf': u['cpf'], 'email': u['email']}
-            return jsonify(users_info)
-    print(id_usuario)
-    return 0
+            user_info = {'id': u['id'], 'name': u['name'], 'cpf': u['cpf'], 'age': u['age'], 'email': u['email']}
+            return jsonify(user_info)
+    return jsonify({'message': 'User not found'}), 404
 
-# Rota para adicionar um novo usuário
+# Route to add a new user
 @app.route('/user', methods=['POST'])
 def add_user():
-    new_user_data = request.json  # Assume que os dados do novo usuário são enviados no corpo da requisição em formato JSON
-    if 'name' in new_user_data and 'age' in new_user_data and 'cpf' in new_user_data:
+    new_user_data = request.json
+    if 'name' in new_user_data and 'cpf' in new_user_data and 'age' in new_user_data and 'email' in new_user_data:
         new_user = {
-            'id': len(users) + 1,
+            'id': len(users) + 1,  # Auto-incremented ID
             'name': new_user_data['name'],
-            'age': new_user_data['age'],
             'cpf': new_user_data['cpf'],
+            'age': new_user_data['age'],
             'email': new_user_data['email']
         }
         users.append(new_user)
@@ -45,9 +43,9 @@ def add_user():
     else:
         return jsonify({'message': 'Missing required fields'}), 400
 
-# Função para salvar os dados dos usuários no arquivo JSON
+# Function to save user data to the JSON file
 def save_users_to_file(users_data):
-    with open('users_data.json', 'w') as f:
+    with open('data_user.json', 'w') as f:
         json.dump(users_data, f, indent=4)
 
 if __name__ == '__main__':
