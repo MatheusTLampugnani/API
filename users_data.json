@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "name": "Matheus",
+        "age": 20,
+        "cpf": "71252497105"
+    },
+    {
+        "id": 2,
+        "name": "Matheus",
+        "age": 20,
+        "cpf": "71252497105",
+        "email": "matheusteixeira@volus.com"
+    },
+    {
+        "id": 3,
+        "name": "Matheus",
+        "age": 20,
+        "cpf": "71252497105",
+        "email": "matheusteixeira@volus.com"
+    }
+]

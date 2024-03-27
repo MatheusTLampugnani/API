@@ -11,7 +11,7 @@ except FileNotFoundError:
     users = []
 
 # Rota para obter todos os usuários com informações básicas (nome, idade, cpf)
-@app.route('/user', methods=['GET'])
+@app.route('/user', methods=['GET']) 
 def get_users_info():
     print(users)
     users_info = [{'name': u['name'], 'age': u['age'], 'cpf': u['cpf']} for u in users]
@@ -22,7 +22,7 @@ def get_user_info(id_usuario):
     users_info = 0
     for u in users:
         if u["id"] == id_usuario:
-            users_info = {'name': u['name'], 'age': u['age'], 'cpf': u['cpf']}
+            users_info = {'name': u['name'], 'age': u['age'], 'cpf': u['cpf'], 'email': u['email']}
             return jsonify(users_info)
     print(id_usuario)
     return 0
@@ -36,7 +36,8 @@ def add_user():
             'id': len(users) + 1,
             'name': new_user_data['name'],
             'age': new_user_data['age'],
-            'cpf': new_user_data['cpf']
+            'cpf': new_user_data['cpf'],
+            'email': new_user_data['email']
         }
         users.append(new_user)
         save_users_to_file(users)
